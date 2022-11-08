@@ -6,4 +6,5 @@ export * from './distribute.function.options.js';
 export * from './distribute.function.yargs.js';
 export * from './dry.function.js';
 export * from './get-workspace-root.function.js';
-export * from './read-package-json.function.js';
+export * from './read-json.function.js';
+export * from './read-yaml.function.js';

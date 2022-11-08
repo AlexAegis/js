@@ -53,7 +53,7 @@ export const turnIntoExecutable = async (
 
 	const extension = extname(filePath);
 
-	if (Object.hasOwn(shebangs, extension)) {
+	if (Object.keys(shebangs).includes(extension)) {
 		const shebang = shebangs[extension];
 		const rawFile = await readFile(filePath, {
 			encoding: 'utf8',

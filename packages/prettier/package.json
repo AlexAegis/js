@@ -58,6 +58,6 @@
 		}
 	},
 	"bin": {
-		"distribute-prettier-config": "./dist/bin/distribute-prettier-config.mjs"
+		"distribute-prettier-config": "./dist/bin/distribute-prettier-config.cjs"
 	}
 }

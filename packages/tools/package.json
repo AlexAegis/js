@@ -41,14 +41,16 @@
 	},
 	"dependencies": {
 		"globby": "^13.1.2",
-		"kolorist": "^1.6.0"
+		"kolorist": "^1.6.0",
+		"js-yaml": "^4.1.0"
 	},
 	"optionalDependencies": {
 		"yargs": "^17.6.2"
 	},
 	"devDependencies": {
-		"typescript": "4.8.4",
-		"@types/yargs": "17.0.13",
+		"typescript": "^4.8.4",
+		"@types/yargs": "^17.0.13",
+		"@types/js-yaml": "^4.0.5",
 		"@alexaegis/tsconfig": "file:../tsconfig",
 		"@alexaegis/vite": "file:../vite",
 		"@alexaegis/vitest": "file:../vitest",
@@ -67,7 +69,7 @@
 		}
 	},
 	"bin": {
-		"distribute": "./dist/bin/distribute.mjs",
-		"alexaegis-tools-postinstall": "./dist/bin/postinstall.mjs"
+		"distribute": "./dist/bin/distribute.cjs",
+		"alexaegis-tools-postinstall": "./dist/bin/postinstall.cjs"
 	}
 }

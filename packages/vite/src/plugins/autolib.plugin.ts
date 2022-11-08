@@ -149,14 +149,17 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 		buildEnd: (buildError) => {
 			error = buildError;
 		},
-		closeBundle: async () => {
+		writeBundle: async (outputOptions) => {
+			console.log('WRITE BUNDLE FOR!', outputOptions.format);
 			if (error) {
 				logger.error("didn't run, error happened during build!");
 				return;
 			}
 
 			const updates = await Promise.all(
-				buildUpdates.map((buildUpdate) => buildUpdate.update?.(packageJson))
+				buildUpdates.map((buildUpdate) =>
+					buildUpdate.update?.(packageJson, outputOptions.format)
+				)
 			);
 			// I have to cheat a little bit because other plugins will steal the
 			// thread during an async copy step
@@ -174,7 +177,11 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 					const packageJsonForArtifact = cloneJsonSerializable(packageJson);
 					const pathOffsets = await Promise.all(
 						buildUpdates.map((buildUpdate) =>
-							buildUpdate.adjustPaths?.(packageJsonForArtifact, packageJsonTarget)
+							buildUpdate.adjustPaths?.(
+								packageJsonForArtifact,
+								packageJsonTarget,
+								outputOptions.format
+							)
 						)
 					);
 					deepMerge(packageJsonForArtifact, ...pathOffsets);

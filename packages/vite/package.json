@@ -49,9 +49,6 @@
 		"kolorist": "^1.6.0",
 		"svelte": "^3.44.0"
 	},
-	"peerDependencies": {
-		"@alexaegis/tsconfig": "file:../tsconfig"
-	},
 	"devDependencies": {
 		"@types/node": "^18.11.9",
 		"@types/fs-extra": "^9.0.13",
@@ -91,8 +88,8 @@
 		}
 	},
 	"bin": {
-		"distribute-vite-config": "./dist/bin/distribute-vite-config.mjs",
-		"alexaegis-vite-postinstall": "./dist/bin/postinstall.mjs",
+		"distribute-vite-config": "./dist/bin/distribute-vite-config.cjs",
+		"alexaegis-vite-postinstall": "./dist/bin/postinstall.cjs",
 		"vite": "node_modules/.bin/vite"
 	}
 }

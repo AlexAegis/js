@@ -2,7 +2,7 @@ import { DEFAULT_NUKE_LIST, nuke, NukeOptions } from '../functions/index.js';
 
 import yargs, { Argv } from 'yargs';
 import packageJson from '../../package.json';
-
+console.log('NUKE!@2');
 const yarguments: Argv<NukeOptions & { cwd: string }> = yargs(process.argv.splice(2))
 	.version(packageJson.version)
 	.epilogue(`${packageJson.name}@${packageJson.version} see project at ${packageJson.homepage}`)

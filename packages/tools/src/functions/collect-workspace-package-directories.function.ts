@@ -1,30 +1,41 @@
 import type { JSONSchemaForNPMPackageJsonFiles as PackageJson } from '@schemastore/package';
 import { globby } from 'globby';
+import { join } from 'node:path';
 import { collectPackageJsonLocationsLinearly } from './collect-package-json-locations-linearly.function.js';
-import { readPackageJson } from './read-package-json.function.js';
+import { readJson } from './read-json.function.js';
+import { readYaml } from './read-yaml.function.js';
 
 export interface RelativePackage {
 	path: string;
 	packageJson: PackageJson;
 }
 
-/**
- * Everything is sync to make it simpler using them in configuration files.
- */
 export const collectWorkspacePackageDirectoriesWithPackageJson = async (
 	path: string
 ): Promise<RelativePackage[]> => {
 	const packages = collectPackageJsonLocationsLinearly(path);
 	const rootWorkspace = packages[0];
-	const packageJson = await readPackageJson(rootWorkspace);
+	const packageJson = await readJson<PackageJson>(join(rootWorkspace, 'package.json'));
 
 	if (packageJson) {
 		const rootPackage: RelativePackage = {
 			path: rootWorkspace,
 			packageJson,
 		};
-		if (packageJson.workspaces) {
-			const paths = await globby(packageJson.workspaces, {
+
+		const pnpmWorkspace = await readYaml<{ workspaces?: string[] }>(
+			join(rootWorkspace, 'pnpm-workspace.yaml')
+		);
+
+		let workspaces = packageJson.workspaces ?? [];
+
+		if (pnpmWorkspace?.workspaces) {
+			workspaces = [...workspaces, ...pnpmWorkspace.workspaces];
+		}
+
+		console.log('WORKSPACES', workspaces);
+		if (workspaces.length > 0) {
+			const paths = await globby(workspaces, {
 				gitignore: true,
 				onlyDirectories: true,
 				ignore: ['node_modules'],
@@ -32,9 +43,14 @@ export const collectWorkspacePackageDirectoriesWithPackageJson = async (
 				cwd: rootWorkspace,
 			});
 
+			console.log('paths', paths);
+
 			const potentialSubPackages = await Promise.all(
 				paths.map((path) =>
-					readPackageJson(path).then((packageJson) => ({ packageJson, path }))
+					readJson(join(path, 'package.json')).then((packageJson) => ({
+						packageJson,
+						path,
+					}))
 				)
 			);
 

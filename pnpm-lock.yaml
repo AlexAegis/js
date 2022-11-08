@@ -31,7 +31,7 @@ importers:
       '@alexaegis/turbo': file:packages/turbo
       '@alexaegis/vitest': file:packages/vitest
     devDependencies:
-      '@alexaegis/vite': file:packages/vite_@alexaegis+tsconfig@0.0.1
+      '@alexaegis/vite': file:packages/vite
 
   packages/dev:
     specifiers:
@@ -55,10 +55,10 @@ importers:
       '@alexaegis/nuke': file:packages/nuke
       '@alexaegis/prettier': file:packages/prettier
       '@alexaegis/stylelint': file:packages/stylelint
-      '@alexaegis/tsconfig': file:packages/tsconfig_@types+node@18.11.9
+      '@alexaegis/tsconfig': file:packages/tsconfig
       '@alexaegis/turbo': file:packages/turbo
     devDependencies:
-      '@alexaegis/vite': file:packages/vite_cfiefdgdxefuq3rrbfjgz46lyi
+      '@alexaegis/vite': file:packages/vite_@types+node@18.11.9
       '@types/node': 18.11.9
       typescript: 4.8.4
 
@@ -205,25 +205,29 @@ importers:
       '@alexaegis/vite': file:../vite
       '@alexaegis/vitest': file:../vitest
       '@schemastore/package': ^0.0.6
+      '@types/js-yaml': ^4.0.5
       '@types/node': ^18.11.9
-      '@types/yargs': 17.0.13
+      '@types/yargs': ^17.0.13
       globby: ^13.1.2
+      js-yaml: ^4.1.0
       kolorist: ^1.6.0
       sort-package-json: 2.1.0
       ts-node: ^10.9.1
-      typescript: 4.8.4
+      typescript: ^4.8.4
       yargs: ^17.6.2
     dependencies:
       globby: 13.1.2
+      js-yaml: 4.1.0
       kolorist: 1.6.0
     optionalDependencies:
       yargs: 17.6.2
     devDependencies:
       '@alexaegis/eslint-config-core': file:packages/eslint-config-core_typescript@4.8.4
-      '@alexaegis/tsconfig': file:packages/tsconfig_@types+node@18.11.9
-      '@alexaegis/vite': file:packages/vite_cfiefdgdxefuq3rrbfjgz46lyi
+      '@alexaegis/tsconfig': file:packages/tsconfig
+      '@alexaegis/vite': file:packages/vite_@types+node@18.11.9
       '@alexaegis/vitest': file:packages/vitest
       '@schemastore/package': 0.0.6
+      '@types/js-yaml': 4.0.5
       '@types/node': 18.11.9
       '@types/yargs': 17.0.13
       sort-package-json: 2.1.0
@@ -235,11 +239,10 @@ importers:
       '@alexaegis/vite': file:../vite
       '@types/node': ^18.11.9
       vite: ^3.2.3
-    dependencies:
-      '@alexaegis/vite': file:packages/vite_@types+node@18.11.9
-      vite: 3.2.3_@types+node@18.11.9
     devDependencies:
+      '@alexaegis/vite': file:packages/vite_@types+node@18.11.9
       '@types/node': 18.11.9
+      vite: 3.2.3_@types+node@18.11.9
 
   packages/turbo:
     specifiers:
@@ -576,6 +579,10 @@ packages:
 
   /@types/istanbul-lib-coverage/2.0.4:
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
+
+  /@types/js-yaml/4.0.5:
+    resolution: {integrity: sha512-FhpRzf927MNQdRZP0J5DLIdTXhjLYzeUTmLAu69mnVksLH9CJY3IuSeEgbKUki7GQZm0WqDkGzyxju2EZGD2wA==}
+    dev: true
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
@@ -939,8 +946,8 @@ packages:
       '@babel/runtime': 7.20.1
       '@babel/runtime-corejs3': 7.20.1
 
-  /array-includes/3.1.5:
-    resolution: {integrity: sha512-iSDYZMMyTPkiFasVqfuAQnWAYcvO/SeBSCGKePoEthjp4LEMTe4uLc7b025o4jAZpHhihh8xPo99TNWUWWkGDQ==}
+  /array-includes/3.1.6:
+    resolution: {integrity: sha512-sgTbLvL6cNnw24FnbaDyjmvddQ2ML8arZsgaJhoABMoplz/4QRhtrYS+alr1BUM1Bwp6dhx8vVCBSLG+StwOFw==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
@@ -1695,7 +1702,7 @@ packages:
         optional: true
     dependencies:
       '@typescript-eslint/parser': 5.42.1_rmayb2veg2btbq6mbmnyivgasy
-      array-includes: 3.1.5
+      array-includes: 3.1.6
       array.prototype.flat: 1.3.1
       debug: 2.6.9
       doctrine: 2.1.0
@@ -1722,7 +1729,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.1
       aria-query: 4.2.2
-      array-includes: 3.1.5
+      array-includes: 3.1.6
       ast-types-flow: 0.0.7
       axe-core: 4.5.1
       axobject-query: 2.2.0
@@ -1749,7 +1756,7 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
     dependencies:
-      array-includes: 3.1.5
+      array-includes: 3.1.6
       array.prototype.flatmap: 1.3.1
       doctrine: 2.1.0
       eslint: 8.27.0
@@ -2416,7 +2423,7 @@ packages:
     resolution: {integrity: sha512-fYQHZTZ8jSfmWZ0iyzfwiU4WDX4HpHbMCZ3gPlWYiCl3BoeOTsqKBqnTVfH2rYT7eP5c3sVbeSPHnnJOaTrWiw==}
     engines: {node: '>=4.0'}
     dependencies:
-      array-includes: 3.1.5
+      array-includes: 3.1.6
       object.assign: 4.1.4
 
   /kind-of/6.0.3:
@@ -3355,6 +3362,7 @@ packages:
       typescript: 4.8.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    dev: true
 
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
@@ -3588,6 +3596,7 @@ packages:
       rollup: 2.79.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /vite/3.2.3_@types+node@18.11.9:
     resolution: {integrity: sha512-h8jl1TZ76eGs3o2dIBSsvXDLb1m/Ec1iej8ZMdz+PsaFUsftZeWe2CZOI3qogEsMNaywc17gu0q6cQDzh/weCQ==}
@@ -3890,6 +3899,7 @@ packages:
     requiresBuild: true
     dependencies:
       globby: 13.1.2
+      js-yaml: 4.1.0
       kolorist: 1.6.0
     optionalDependencies:
       yargs: 17.6.2
@@ -3899,40 +3909,6 @@ packages:
     resolution: {directory: packages/tsconfig, type: directory}
     name: '@alexaegis/tsconfig'
     version: 0.0.1
-    dependencies:
-      '@alexaegis/vite': file:packages/vite_@alexaegis+tsconfig@0.0.1
-      vite: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - diff-match-patch
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  file:packages/tsconfig_@types+node@18.11.9:
-    resolution: {directory: packages/tsconfig, type: directory}
-    id: file:packages/tsconfig
-    name: '@alexaegis/tsconfig'
-    version: 0.0.1
-    dependencies:
-      '@alexaegis/vite': file:packages/vite_cfiefdgdxefuq3rrbfjgz46lyi
-      vite: 3.2.3_@types+node@18.11.9
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - diff-match-patch
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
 
   file:packages/turbo:
     resolution: {directory: packages/turbo, type: directory}
@@ -3943,17 +3919,13 @@ packages:
       turbo: 1.6.3
     dev: false
 
-  file:packages/vite_@alexaegis+tsconfig@0.0.1:
+  file:packages/vite:
     resolution: {directory: packages/vite, type: directory}
-    id: file:packages/vite
     name: '@alexaegis/vite'
     version: 0.0.1
     hasBin: true
     requiresBuild: true
-    peerDependencies:
-      '@alexaegis/tsconfig': file:../tsconfig
     dependencies:
-      '@alexaegis/tsconfig': file:packages/tsconfig
       '@sveltejs/vite-plugin-svelte': 1.1.0_svelte@3.52.0+vite@3.2.3
       fs-extra: 10.1.0
       globby: 13.1.2
@@ -3976,6 +3948,7 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
 
   file:packages/vite_@types+node@18.11.9:
     resolution: {directory: packages/vite, type: directory}
@@ -3984,8 +3957,6 @@ packages:
     version: 0.0.1
     hasBin: true
     requiresBuild: true
-    peerDependencies:
-      '@alexaegis/tsconfig': file:../tsconfig
     dependencies:
       '@sveltejs/vite-plugin-svelte': 1.1.0_svelte@3.52.0+vite@3.2.3
       fs-extra: 10.1.0
@@ -4009,40 +3980,7 @@ packages:
       - sugarss
       - supports-color
       - terser
-
-  file:packages/vite_cfiefdgdxefuq3rrbfjgz46lyi:
-    resolution: {directory: packages/vite, type: directory}
-    id: file:packages/vite
-    name: '@alexaegis/vite'
-    version: 0.0.1
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@alexaegis/tsconfig': file:../tsconfig
-    dependencies:
-      '@alexaegis/tsconfig': file:packages/tsconfig_@types+node@18.11.9
-      '@sveltejs/vite-plugin-svelte': 1.1.0_svelte@3.52.0+vite@3.2.3
-      fs-extra: 10.1.0
-      globby: 13.1.2
-      kolorist: 1.6.0
-      rollup: 2.79.1
-      svelte: 3.52.0
-      ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
-      typescript: 4.8.4
-      vite: 3.2.3_@types+node@18.11.9
-      vite-plugin-dts: 1.7.0_vite@3.2.3
-      vite-plugin-static-copy: 0.11.1_vite@3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - diff-match-patch
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
+    dev: true
 
   file:packages/vitest:
     resolution: {directory: packages/vitest, type: directory}
