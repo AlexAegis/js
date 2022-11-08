@@ -39,6 +39,9 @@
 	"devDependencies": {
 		"typescript": "4.8.4",
 		"@types/node": "^18.11.9",
-		"@alexaegis/vite": "link:../vite"
+		"@alexaegis/vite": "file:../vite"
+	},
+	"bin": {
+		"turbo": "node_modules/.bin/turbo"
 	}
 }

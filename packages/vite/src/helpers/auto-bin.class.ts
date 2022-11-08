@@ -8,6 +8,7 @@ import { getBundledFileExtension } from './append-bundle-file-extension.function
 import { AutoBinOptions, normalizeAutoBinOptions } from './auto-bin.class.options.js';
 import { offsetPathRecordValues } from './collect-export-entries.function.js';
 import { collectFileMap } from './collect-export-map.function.js';
+import { deepMerge } from './deep-merge.function.js';
 import { enterPathPosix } from './enter-path.function.js';
 import { makeJavascriptFilesExecutable } from './make-javascript-files-executable.function.js';
 import { normalizePackageName } from './normalize-package-name.function.js';
@@ -56,6 +57,8 @@ export class AutoBin implements PreparedBuildUpdate {
 
 	private outputFiles: string[] = [];
 
+	private oldBins: Record<string, string> | undefined;
+
 	constructor(options: AutoBinOptions) {
 		this.options = normalizeAutoBinOptions(options);
 	}
@@ -65,6 +68,7 @@ export class AutoBin implements PreparedBuildUpdate {
 	}
 
 	async preUpdate(packageJson: PackageJson) {
+		this.oldBins = packageJson.bin;
 		packageJson.bin = undefined;
 		for (const script in packageJson.scripts) {
 			if (packageJson.scripts[script].endsWith(this.markComment)) {
@@ -193,6 +197,7 @@ export class AutoBin implements PreparedBuildUpdate {
 				(accumulator, [key, binPath]) => {
 					// bins always point to the build artifact
 					accumulator[key] = retargetPackageJsonPath(binPath, 'build');
+
 					return accumulator;
 				},
 				{} as Record<string, string>
@@ -200,7 +205,18 @@ export class AutoBin implements PreparedBuildUpdate {
 			binUpdate = offsetBins;
 			// TODO: Only need to do this when generating the es target
 			binUpdate = await this.renameEsmBinEntries(binUpdate, packageJson.type);
-			this.preLink(binUpdate);
+			// TODO: turn this back this.preLink(binUpdate);
+
+			if (packageJsonTarget === 'dist') {
+				binUpdate = offsetPathRecordValues(binUpdate, '', 1);
+			}
+		}
+
+		if (this.oldBins) {
+			const hoistingBins = Object.fromEntries(
+				Object.entries(this.oldBins).filter(([, path]) => path.includes('node_modules'))
+			);
+			binUpdate = deepMerge(binUpdate, hoistingBins);
 		}
 
 		return { bin: binUpdate, scripts: scriptsUpdate };
@@ -252,12 +268,15 @@ export class AutoBin implements PreparedBuildUpdate {
 
 		await Promise.all(
 			symlinksToMake.map(({ targetFilePath, relativeFromTargetBackToFile }) => {
-				this.options.logger.log?.(
-					`symlinking ${targetFilePath} to ${relativeFromTargetBackToFile}`
-				);
-				return symlink(relativeFromTargetBackToFile, targetFilePath).catch(() => {
-					this.options.logger.log?.(`${targetFilePath} is already present`);
-				});
+				return symlink(relativeFromTargetBackToFile, targetFilePath)
+					.then(() => {
+						this.options.logger.log?.(
+							`symlinked ${targetFilePath} to ${relativeFromTargetBackToFile}`
+						);
+					})
+					.catch(() => {
+						this.options.logger.log?.(`${targetFilePath} is already present`);
+					});
 			})
 		);
 	}

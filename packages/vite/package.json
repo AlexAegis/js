@@ -50,7 +50,7 @@
 		"svelte": "^3.44.0"
 	},
 	"peerDependencies": {
-		"@alexaegis/tsconfig": "link:../tsconfig"
+		"@alexaegis/tsconfig": "file:../tsconfig"
 	},
 	"devDependencies": {
 		"@types/node": "^18.11.9",
@@ -92,6 +92,7 @@
 	},
 	"bin": {
 		"distribute-vite-config": "./dist/bin/distribute-vite-config.mjs",
-		"alexaegis-vite-postinstall": "./dist/bin/postinstall.mjs"
+		"alexaegis-vite-postinstall": "./dist/bin/postinstall.mjs",
+		"vite": "node_modules/.bin/vite"
 	}
 }

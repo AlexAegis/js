@@ -47,6 +47,7 @@ export const DEFAULT_NUKE_LIST: string[] = [
 	'.turbo',
 	'coverage',
 	'package-lock.json',
+	'pnpm-lock.yaml',
 ];
 
 const nukeLogger = (message: string) => console.log(red('[☢ nuke]'), yellow(message));

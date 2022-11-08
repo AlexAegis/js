@@ -46,11 +46,11 @@
 		"access": "public"
 	},
 	"dependencies": {
-		"@alexaegis/tools": "link:../tools"
+		"@alexaegis/tools": "file:../tools"
 	},
 	"devDependencies": {
 		"@types/node": "^18.11.9",
 		"typescript": "4.8.4",
-		"@alexaegis/vite": "link:../vite"
+		"@alexaegis/vite": "file:../vite"
 	}
 }

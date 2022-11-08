@@ -52,21 +52,20 @@
 		"nuke": "nuke"
 	},
 	"dependencies": {
-		"turbo": "^1.6.3",
-		"@alexaegis/editorconfig": "link:packages/editorconfig",
-		"@alexaegis/eslint-config-core": "link:packages/eslint-config-core",
-		"@alexaegis/eslint-config-svelte": "link:packages/eslint-config-svelte",
-		"@alexaegis/git": "link:packages/git",
-		"@alexaegis/husky": "link:packages/husky",
-		"@alexaegis/nuke": "link:packages/nuke",
-		"@alexaegis/prettier": "link:packages/prettier",
-		"@alexaegis/stylelint": "link:packages/stylelint",
-		"@alexaegis/tools": "link:packages/tools",
-		"@alexaegis/tsconfig": "link:packages/tsconfig",
-		"@alexaegis/turbo": "link:packages/turbo",
-		"@alexaegis/vitest": "link:packages/vitest"
+		"@alexaegis/editorconfig": "file:packages/editorconfig",
+		"@alexaegis/eslint-config-core": "file:packages/eslint-config-core",
+		"@alexaegis/eslint-config-svelte": "file:packages/eslint-config-svelte",
+		"@alexaegis/git": "file:packages/git",
+		"@alexaegis/husky": "file:packages/husky",
+		"@alexaegis/nuke": "file:packages/nuke",
+		"@alexaegis/prettier": "file:packages/prettier",
+		"@alexaegis/stylelint": "file:packages/stylelint",
+		"@alexaegis/tools": "file:packages/tools",
+		"@alexaegis/tsconfig": "file:packages/tsconfig",
+		"@alexaegis/turbo": "file:packages/turbo",
+		"@alexaegis/vitest": "file:packages/vitest"
 	},
 	"devDependencies": {
-		"@alexaegis/vite": "link:packages/vite"
+		"@alexaegis/vite": "file:packages/vite"
 	}
 }
