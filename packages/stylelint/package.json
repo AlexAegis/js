@@ -37,7 +37,8 @@
 		"stylelint": "14.14.1"
 	},
 	"devDependencies": {
+		"@types/node": "^18.11.9",
 		"typescript": "4.8.4",
-		"@alexaegis/vite": "file:../vite"
+		"@alexaegis/vite": "link:../vite"
 	}
 }

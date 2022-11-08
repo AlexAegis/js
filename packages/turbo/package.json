@@ -38,6 +38,7 @@
 	},
 	"devDependencies": {
 		"typescript": "4.8.4",
-		"@alexaegis/vite": "file:../vite"
+		"@types/node": "^18.11.9",
+		"@alexaegis/vite": "link:../vite"
 	}
 }

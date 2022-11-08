@@ -41,7 +41,9 @@
 		"lint:format": "prettier --check ."
 	},
 	"dependencies": {
-		"@alexaegis/eslint-config-core": "file:../eslint-config-core"
+		"@alexaegis/eslint-config-core": "link:../eslint-config-core"
 	},
-	"devDependencies": {}
+	"devDependencies": {
+		"@types/node": "^18.11.9"
+	}
 }
