@@ -8,6 +8,7 @@ export * from './exists-directory.function.js';
 export * from './exists-file.function.js';
 export * from './exists-symlink.function.js';
 export * from './package-json-export-conditions.type.js';
+export * from './to-absolute.function.js';
 export * from './try-prettify.function.js';
 export * from './turn-into-executable.function.js';
 export * from './write-json.function.js';

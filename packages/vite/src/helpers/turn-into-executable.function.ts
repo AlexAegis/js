@@ -1,7 +1,8 @@
-import { extname, isAbsolute, join } from 'node:path';
+import { extname } from 'node:path';
 
 import { chmod, lstat, readFile, writeFile } from 'node:fs/promises';
 import type { Logger } from './create-vite-plugin-logger.function.js';
+import { toAbsolute } from './to-absolute.function.js';
 
 export const SHEBANG_SEQUENCE = '#!';
 export const SHELL_SHEBANG = '#!/usr/bin/env sh';
@@ -40,7 +41,7 @@ export const turnIntoExecutable = async (
 	options?: TurnIntoExecutableOptions
 ): Promise<void> => {
 	const cwd = options?.cwd ?? process.cwd();
-	const filePath = isAbsolute(file) ? file : join(cwd, file);
+	const filePath = toAbsolute(file, cwd);
 	const fileStats = await lstat(filePath).catch(() => undefined);
 
 	if (!fileStats) {

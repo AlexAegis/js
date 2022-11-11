@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises';
-import { tryPrettify } from './try-prettify.function.js';
+import { getPrettierFormatter } from './try-prettify.function.js';
 
 export interface WriteJsonOptions {
 	/**
@@ -29,7 +29,8 @@ export const writeJson = async (
 	const autoPrettier = options?.autoPrettier ?? true;
 
 	if (autoPrettier) {
-		const formatted = await tryPrettify(raw);
+		const formatter = await getPrettierFormatter({ parser: 'json-stringify' });
+		const formatted = formatter(raw);
 		if (!dry) {
 			await writeFile(path, formatted);
 		} else {

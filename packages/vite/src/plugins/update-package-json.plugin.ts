@@ -1,7 +1,6 @@
 import { writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
 import type { Plugin } from 'vite';
-import { tryPrettify } from '../helpers/index.js';
+import { getPrettierFormatter, toAbsolute } from '../helpers/index.js';
 import type { PackageJson } from '../helpers/package-json.type.js';
 import { readPackageJson } from '../helpers/read-package-json.function.js';
 
@@ -18,7 +17,7 @@ export const updatePackageJsonPlugin = (options: UpdatePackageJsonPluginOptions)
 	buildEnd: async (error) => {
 		if (!error) {
 			const cwd = options.cwd ?? process.cwd();
-			const packageJsonLocation = join(cwd, options.filename ?? 'package.json');
+			const packageJsonLocation = toAbsolute(options.filename ?? 'package.json', cwd);
 
 			const packageJson = await readPackageJson(packageJsonLocation);
 			if (!packageJson) {
@@ -31,7 +30,8 @@ export const updatePackageJsonPlugin = (options: UpdatePackageJsonPluginOptions)
 			let rawAugmentedPackageJson = JSON.stringify(augmentedPackageJson);
 
 			if (options.autoPrettier ?? true) {
-				rawAugmentedPackageJson = await tryPrettify(rawAugmentedPackageJson);
+				const formatter = await getPrettierFormatter({ parser: 'json-stringify', cwd });
+				rawAugmentedPackageJson = formatter(rawAugmentedPackageJson);
 			}
 
 			await writeFile(packageJsonLocation, rawAugmentedPackageJson);

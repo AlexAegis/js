@@ -2,8 +2,9 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "@alexaegis/tsconfig/base",
 	"compilerOptions": {
-		"rootDir": "."
+		"rootDir": ".",
+		"outDir": "dist/out-tsx"
 	},
-	"include": ["./vitest.config.ts"],
-	"exclude": ["node_modules"]
+	"include": ["*.ts", "*.mjs", "*.cjs", ".eslintrc.cjs"],
+	"exclude": ["node_modules", "coverage", "dist"]
 }

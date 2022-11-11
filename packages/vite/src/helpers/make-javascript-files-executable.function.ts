@@ -1,5 +1,5 @@
 import { globby } from 'globby';
-import { InternalModuleFormat } from 'rollup';
+import type { InternalModuleFormat } from 'rollup';
 import { getBundledFileExtension } from './append-bundle-file-extension.function.js';
 import type { Logger } from './create-vite-plugin-logger.function.js';
 
@@ -26,7 +26,12 @@ export const makeJavascriptFilesExecutable = async (
 ): Promise<void> => {
 	const dirtectoryContent = await globby(path, { cwd: options?.cwd });
 	const executables = dirtectoryContent.filter((bin) =>
-		bin.endsWith(getBundledFileExtension(options.format, options.packageJsonType))
+		bin.endsWith(
+			getBundledFileExtension({
+				format: options.format,
+				packageType: options.packageJsonType,
+			})
+		)
 	);
 	await Promise.all(executables.map((executable) => turnIntoExecutable(executable, options)));
 };

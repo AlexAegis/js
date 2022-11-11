@@ -44,9 +44,18 @@ export class AutoEntry implements PreparedBuildUpdate {
 		const hasEsm = this.options.formats.includes('es');
 		const hasCjs = this.options.formats.includes('cjs');
 
-		const umdExtension = getBundledFileExtension('umd', packageJson.type);
-		const esmExtension = getBundledFileExtension('es', packageJson.type);
-		const cjsExtension = getBundledFileExtension('cjs', packageJson.type);
+		const umdExtension = getBundledFileExtension({
+			format: 'umd',
+			packageType: packageJson.type,
+		});
+		const esmExtension = getBundledFileExtension({
+			format: 'es',
+			packageType: packageJson.type,
+		});
+		const cjsExtension = getBundledFileExtension({
+			format: 'cjs',
+			packageType: packageJson.type,
+		});
 
 		this.entryExports = Object.entries(this.entryMap).reduce(
 			(accumulator, [key, entryFile]) => {
@@ -64,19 +73,19 @@ export class AutoEntry implements PreparedBuildUpdate {
 
 				if (hasUmd) {
 					exportConditions.require = `.${posix.sep}${posix.normalize(
-						`${extensionlessPath}.${umdExtension}`
+						`${extensionlessPath}${umdExtension}`
 					)}`;
 				}
 
 				if (hasCjs) {
 					exportConditions.require = `.${posix.sep}${posix.normalize(
-						`${extensionlessPath}.${cjsExtension}`
+						`${extensionlessPath}${cjsExtension}`
 					)}`;
 				}
 
 				if (hasEsm) {
 					exportConditions.import = `.${posix.sep}${posix.normalize(
-						`${extensionlessPath}.${esmExtension}`
+						`${extensionlessPath}${esmExtension}`
 					)}`;
 				}
 				if (key === 'index') {
@@ -97,11 +106,8 @@ export class AutoEntry implements PreparedBuildUpdate {
 			(accumulator, [key, exportCondition]) => {
 				if (key in this.entryExports && typeof exportCondition === 'object') {
 					switch (packageJsonTarget) {
-						case 'dist': {
-							exportCondition.default = undefined;
-							break;
-						}
-						case 'build': {
+						case 'out-to-out':
+						case 'out': {
 							exportCondition.default = undefined;
 							break;
 						}
@@ -116,7 +122,10 @@ export class AutoEntry implements PreparedBuildUpdate {
 					accumulator[key] = Object.entries(exportCondition).reduce(
 						(conditions, [key, path]) => {
 							if (path !== undefined) {
-								conditions[key] = retargetPackageJsonPath(path, packageJsonTarget);
+								conditions[key] = retargetPackageJsonPath(path, {
+									packageJsonTarget,
+									outDir: this.options.outDir,
+								});
 							}
 							return conditions;
 						},

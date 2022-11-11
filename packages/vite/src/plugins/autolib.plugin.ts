@@ -5,7 +5,7 @@ import { DEFAULT_ENTRY_DIR, DEFAULT_EXPORT_FORMATS } from '../helpers/auto-entry
 import { AutoExportStatic } from '../helpers/auto-export-static.class.js';
 import { cloneJsonSerializable } from '../helpers/clone-json-serializable.function.js';
 import { createVitePluginLogger } from '../helpers/create-vite-plugin-logger.function.js';
-import { AutoBin, AutoEntry, deepMerge, writeJson } from '../helpers/index.js';
+import { AutoBin, AutoEntry, deepMerge, toAbsolute, writeJson } from '../helpers/index.js';
 import type { PackageJson } from '../helpers/package-json.type.js';
 import type { PreparedBuildUpdate } from '../helpers/prepared-build-update.type.js';
 import { readPackageJson } from '../helpers/read-package-json.function.js';
@@ -16,16 +16,7 @@ import {
 } from './autolib.plugin.options.js';
 
 /**
- * Packaged formats are defined in config.build.lib.formats, defaults to es and cjs
- *
  * TODO: This plugin will be moved to a different repo
- *
- * TODO: add an option to let the source PackageJson refer to scripts using tsnode/register node
- * calls to avoid the building requirement
- * TODO: skip postinstall hooks when non tsnode/reg sourcepackagejson to avoid not being able to
- * tun npm i (also add warning)
- * @param options
- * @returns
  */
 export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 	const options = normalizeAutolibOptions(rawOptions);
@@ -66,14 +57,14 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 
 			outDirectory = config.build?.outDir ?? DEFAULT_OUT_DIR;
 
-			if (options.autoBinGlobs) {
+			if (options.autoBin) {
 				buildUpdates.push(
 					new AutoBin({
-						binGlobs: options.autoBinGlobs,
 						cwd: options.cwd,
-						formats,
+						binDir: options.autoBin.binDir,
+						shimDir: options.autoBin.shimDir,
 						outDir: outDirectory,
-						sourceDirectory,
+						srcDir: sourceDirectory,
 						logger,
 					})
 				);
@@ -83,8 +74,8 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 				buildUpdates.push(
 					new AutoEntry({
 						cwd: options.cwd,
-						entryDir: options.autoEntryDir,
 						formats,
+						entryDir: options.autoEntryDir,
 						outDir: outDirectory,
 						sourceDirectory,
 						logger,
@@ -150,7 +141,15 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 			error = buildError;
 		},
 		writeBundle: async (outputOptions) => {
-			console.log('WRITE BUNDLE FOR!', outputOptions.format);
+			const handlePackageJson =
+				(packageJson.type === 'module' && outputOptions.format === 'es') ||
+				((packageJson.type === 'commonjs' || packageJson.type === undefined) &&
+					outputOptions.format !== 'es');
+
+			if (!handlePackageJson) {
+				return;
+			}
+
 			if (error) {
 				logger.error("didn't run, error happened during build!");
 				return;
@@ -165,16 +164,17 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 			// thread during an async copy step
 			const startTime = performance.now();
 
-			deepMerge(packageJson, ...updates);
+			packageJson = deepMerge(packageJson, ...updates);
 
-			const packageJsonTargets: PackageJsonTarget[] = ['dist'];
+			const packageJsonTargets: PackageJsonTarget[] = ['out-to-out'];
 			if (options.packageJsonTarget) {
 				packageJsonTargets.push(options.packageJsonTarget);
 			}
+			console.log('packageJsonTargets', packageJsonTargets);
 
 			await Promise.all(
 				packageJsonTargets.map(async (packageJsonTarget) => {
-					const packageJsonForArtifact = cloneJsonSerializable(packageJson);
+					let packageJsonForArtifact = cloneJsonSerializable(packageJson);
 					const pathOffsets = await Promise.all(
 						buildUpdates.map((buildUpdate) =>
 							buildUpdate.adjustPaths?.(
@@ -184,12 +184,21 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 							)
 						)
 					);
-					deepMerge(packageJsonForArtifact, ...pathOffsets);
+
+					packageJsonForArtifact = deepMerge(packageJsonForArtifact, ...pathOffsets);
+					console.log(
+						'MERGED UPDATGED BIN',
+						packageJsonForArtifact.bin,
+						pathOffsets,
+						packageJsonTarget,
+						outputOptions.format,
+						packageJson.type
+					);
 
 					const destination =
-						packageJsonTarget === 'dist'
-							? join(options.cwd, outDirectory, 'package.json')
-							: join(options.cwd, 'package.json');
+						packageJsonTarget === 'out-to-out'
+							? toAbsolute(join(outDirectory, 'package.json'), options.cwd)
+							: toAbsolute('package.json', options.cwd);
 
 					return await writeJson(
 						cloneJsonSerializable(packageJsonForArtifact),

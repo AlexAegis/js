@@ -37,7 +37,7 @@
 	},
 	"dependencies": {
 		"yargs": "^17.6.2",
-		"prettier": "2.7.1",
+		"prettier": "^2.7.1",
 		"@alexaegis/tools": "file:../tools"
 	},
 	"devDependencies": {
@@ -58,6 +58,6 @@
 		}
 	},
 	"bin": {
-		"distribute-prettier-config": "./dist/bin/distribute-prettier-config.cjs"
+		"distribute-prettier-config": "./shims/distribute-prettier-config.mjs"
 	}
 }

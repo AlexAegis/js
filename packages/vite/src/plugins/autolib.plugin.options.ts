@@ -1,12 +1,12 @@
-import { DEFAULT_BIN_GLOBS } from '../helpers/auto-bin.class.options.js';
+import { DEFAULT_BINSHIM_DIR, DEFAULT_BIN_DIR } from '../helpers/auto-bin.class.options.js';
 import { DEFAULT_ENTRY_DIR } from '../helpers/auto-entry.class.options.js';
 import { DEFAULT_STATIC_EXPORT_GLOBS } from '../helpers/auto-export-static.class.options.js';
 import type { WriteJsonOptions } from '../helpers/write-json.function.js';
 
 export const DEFAULT_SRC_DIR = 'src';
 
-export type SourcePackageJsonTarget = 'source' | 'build';
-export type PackageJsonTarget = SourcePackageJsonTarget | 'dist';
+export type SourcePackageJsonTarget = 'source' | 'out';
+export type PackageJsonTarget = SourcePackageJsonTarget | 'out-to-out' | 'shim';
 
 export interface AutolibPluginOptions extends WriteJsonOptions {
 	/**
@@ -80,15 +80,14 @@ export interface AutolibPluginOptions extends WriteJsonOptions {
 	 *
 	 * @default '["./bin/*.ts"]'
 	 */
-	autoBinGlobs?: string[] | false;
+	autoBin?: AutoLibraryAutoBinOptions | false;
 }
 
 export const normalizeAutolibOptions = (
 	options?: AutolibPluginOptions
 ): Required<AutolibPluginOptions> => {
 	return {
-		autoBinGlobs:
-			options?.autoBinGlobs === false ? false : options?.autoBinGlobs ?? DEFAULT_BIN_GLOBS,
+		autoBin: normalizeAutoBinOption(options?.autoBin),
 		autoEntryDir:
 			options?.autoEntryDir === false ? false : options?.autoEntryDir ?? DEFAULT_ENTRY_DIR,
 		autoExportStaticGlobs:
@@ -102,4 +101,20 @@ export const normalizeAutolibOptions = (
 		packageJsonTarget: options?.packageJsonTarget ?? 'source',
 		src: options?.src ?? DEFAULT_SRC_DIR,
 	};
+};
+
+interface AutoLibraryAutoBinOptions {
+	binDir?: string;
+	shimDir?: string;
+}
+
+const normalizeAutoBinOption = (
+	autoBin?: AutoLibraryAutoBinOptions | false
+): Required<AutoLibraryAutoBinOptions> | false => {
+	return autoBin === false
+		? false
+		: {
+				binDir: autoBin?.binDir ?? DEFAULT_BIN_DIR,
+				shimDir: autoBin?.shimDir ?? DEFAULT_BINSHIM_DIR,
+		  };
 };

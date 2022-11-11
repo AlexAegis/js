@@ -38,7 +38,7 @@ export const collectFileNamePathEntries = async (
 	return immediateFileNames.reduce((accumulator, next) => {
 		const fileName = basename(next);
 		const namestub = stripFileExtension(next);
-		accumulator[join(exportPath, namestub)] = fileName;
+		accumulator[namestub] = join(exportPath, fileName);
 		return accumulator;
 	}, {} as Record<string, string>);
 };

@@ -1,4 +1,4 @@
-import type { BuiltInParserName } from 'prettier';
+import type { BuiltInParserName, Options } from 'prettier';
 
 export interface PrettifyOptions {
 	/**
@@ -17,15 +17,25 @@ export interface PrettifyOptions {
  * otherwise
  */
 export const tryPrettify = async (content: string, options?: PrettifyOptions): Promise<string> => {
+	const formatter = await getPrettierFormatter(options);
+	return formatter(content);
+};
+
+/**
+ * @returns a function that formats strings with prettier
+ */
+export const getPrettierFormatter = async (
+	options?: PrettifyOptions
+): Promise<(content: string) => string> => {
 	try {
 		const prettier = await import('prettier');
 		const prettierConfig = await prettier.default.resolveConfig(options?.cwd ?? process.cwd());
-		const formatted = prettier.default.format(content, {
+		const prettierOptions: Options = {
 			...prettierConfig,
-			parser: options?.parser ?? 'json-stringify',
-		});
-		return formatted;
+			parser: options?.parser ?? 'babel',
+		};
+		return (content) => prettier.default.format(content, prettierOptions);
 	} catch {
-		return content;
+		return (content) => content;
 	}
 };

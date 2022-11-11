@@ -22,7 +22,7 @@ export interface PreparedBuildUpdate {
 	 *
 	 * Runs after `preUpdate`
 	 */
-	update: (packageJson: PackageJson, format: InternalModuleFormat) => Awaitable<PackageJson>;
+	update?: (packageJson: PackageJson, format: InternalModuleFormat) => Awaitable<PackageJson>;
 	/**
 	 * Offsets each path this manages
 	 *
