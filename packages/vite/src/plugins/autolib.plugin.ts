@@ -170,7 +170,6 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 			if (options.packageJsonTarget) {
 				packageJsonTargets.push(options.packageJsonTarget);
 			}
-			console.log('packageJsonTargets', packageJsonTargets);
 
 			await Promise.all(
 				packageJsonTargets.map(async (packageJsonTarget) => {
@@ -186,14 +185,6 @@ export const autolib = (rawOptions?: AutolibPluginOptions): Plugin => {
 					);
 
 					packageJsonForArtifact = deepMerge(packageJsonForArtifact, ...pathOffsets);
-					console.log(
-						'MERGED UPDATGED BIN',
-						packageJsonForArtifact.bin,
-						pathOffsets,
-						packageJsonTarget,
-						outputOptions.format,
-						packageJson.type
-					);
 
 					const destination =
 						packageJsonTarget === 'out-to-out'

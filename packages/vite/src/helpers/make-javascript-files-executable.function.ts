@@ -18,6 +18,11 @@ export interface MakeJavascriptFilesExecutableOptions {
 	 * @default undefined
 	 */
 	logger?: Logger;
+
+	/**
+	 * @default false
+	 */
+	forceMjsExtensionForEs?: boolean;
 }
 
 export const makeJavascriptFilesExecutable = async (
@@ -30,6 +35,7 @@ export const makeJavascriptFilesExecutable = async (
 			getBundledFileExtension({
 				format: options.format,
 				packageType: options.packageJsonType,
+				forceMjsExtensionForEs: options.forceMjsExtensionForEs,
 			})
 		)
 	);
